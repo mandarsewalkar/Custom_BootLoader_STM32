@@ -24,16 +24,14 @@ The goal of this project was to understand and implement the complete firmware u
 
 # System Architecture
 
-+-------------------------+
-| Bootloader |
-| 0x08000000 |
-+-------------------------+
-| Boot Configuration |
-+-------------------------+
-| APP Slot 0 |
-+-------------------------+
-| APP Slot 1 |
-+-------------------------+
+### Flash Memory Layout
+
+| Region                    | Purpose                                                            |
+| ------------------------- | ------------------------------------------------------------------ |
+| Bootloader (`0x08000000`) | Handles firmware updates, image validation, and application launch |
+| Boot Configuration        | Stores active slot information and image metadata                  |
+| Application Slot 0        | Firmware image storage (APP0)                                      |
+| Application Slot 1        | Firmware image storage (APP1)                                      |
 
 The bootloader remains permanently resident in Flash and is responsible for:
 
@@ -89,19 +87,24 @@ Firmware images are divided into packets and transmitted sequentially.
 
 ### Data Packet Structure
 
-+-------------+--------+---------+--------+---------+----------+
-| Header | Type | Address | Length | Payload | CRC32 |
-+-------------+--------+---------+--------+---------+----------+
-| 0xAA 0x55 | 1 Byte | 4 Bytes | 2 Bytes| N Bytes | 4 Bytes |
-+-------------+--------+---------+--------+---------+----------+
+| Field   | Size    | Description                           |
+| ------- | ------- | ------------------------------------- |
+| Header  | 2 Bytes | Packet start identifier (`0xAA 0x55`) |
+| Type    | 1 Byte  | Packet type                           |
+| Address | 4 Bytes | Target Flash address                  |
+| Length  | 2 Bytes | Payload length                        |
+| Payload | N Bytes | Firmware data                         |
+| CRC32   | 4 Bytes | Packet integrity check                |
 
 ### End of Communication (EOC) Packet
 
-+-------------+------+------------+-----------+----------+
-| Header | Type | Image Size | Image CRC | CRC32 |
-+-------------+------+------------+-----------+----------+
-| 0xAA 0x55 | EOC | 4 Bytes | 4 Bytes | 4 Bytes |
-+-------------+------+------------+-----------+----------+
+| Field       | Size    | Description                           |
+| ----------- | ------- | ------------------------------------- |
+| Header      | 2 Bytes | Packet start identifier (`0xAA 0x55`) |
+| Type        | 1 Byte  | End-of-Communication packet (`EOC`)   |
+| Image Size  | 4 Bytes | Total firmware image size             |
+| Image CRC32 | 4 Bytes | CRC32 of complete firmware image      |
+| CRC32       | 4 Bytes | EOC packet integrity check            |
 
 Protocol capabilities:
 
@@ -267,7 +270,7 @@ One of the biggest lessons from this project was to verify every assumption, no 
 
 ## Video Demonstration
 
-![Demo Video](Media/demo.mp4)
+![Demo Video](Media/demo.gif)
 
 - Video is also available in Media folder
 

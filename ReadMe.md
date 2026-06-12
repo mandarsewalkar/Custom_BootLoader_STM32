@@ -24,18 +24,16 @@ The goal of this project was to understand and implement the complete firmware u
 
 # System Architecture
 
-```text
 +-------------------------+
-|       Bootloader        |
-|      0x08000000         |
+| Bootloader |
+| 0x08000000 |
 +-------------------------+
-|    Boot Configuration   |
+| Boot Configuration |
 +-------------------------+
-|      APP Slot 0         |
+| APP Slot 0 |
 +-------------------------+
-|      APP Slot 1         |
+| APP Slot 1 |
 +-------------------------+
-```
 
 The bootloader remains permanently resident in Flash and is responsible for:
 
@@ -91,23 +89,19 @@ Firmware images are divided into packets and transmitted sequentially.
 
 ### Data Packet Structure
 
-```text
 +-------------+--------+---------+--------+---------+----------+
-| Header      | Type   | Address | Length | Payload | CRC32    |
+| Header | Type | Address | Length | Payload | CRC32 |
 +-------------+--------+---------+--------+---------+----------+
-| 0xAA 0x55   | 1 Byte | 4 Bytes | 2 Bytes| N Bytes | 4 Bytes  |
+| 0xAA 0x55 | 1 Byte | 4 Bytes | 2 Bytes| N Bytes | 4 Bytes |
 +-------------+--------+---------+--------+---------+----------+
-```
 
 ### End of Communication (EOC) Packet
 
-```text
 +-------------+------+------------+-----------+----------+
-| Header      | Type | Image Size | Image CRC | CRC32    |
+| Header | Type | Image Size | Image CRC | CRC32 |
 +-------------+------+------------+-----------+----------+
-| 0xAA 0x55   | EOC  | 4 Bytes    | 4 Bytes   | 4 Bytes  |
+| 0xAA 0x55 | EOC | 4 Bytes | 4 Bytes | 4 Bytes |
 +-------------+------+------------+-----------+----------+
-```
 
 Protocol capabilities:
 
@@ -273,9 +267,7 @@ One of the biggest lessons from this project was to verify every assumption, no 
 
 ## Video Demonstration
 
-```markdown
 ![Demo Video](Media/demo.mp4)
-```
 
 - Video is also available in Media folder
 
